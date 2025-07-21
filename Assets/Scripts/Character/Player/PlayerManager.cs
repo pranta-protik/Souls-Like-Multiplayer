@@ -13,6 +13,11 @@ namespace SoulsLike
         protected override void Update() {
             base.Update();
 
+            // IF WE DO NOT OWN THIS GAME OBJECT, WE DO NOT CONTROL OR EDIT IT
+            if (!IsOwner) {
+                return;
+            }
+
             // HANDLE MOVEMENT
             _playerLocomotionManager.HandleAllMovement();
         }
