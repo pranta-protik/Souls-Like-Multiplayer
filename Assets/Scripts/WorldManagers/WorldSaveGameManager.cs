@@ -10,23 +10,24 @@ namespace SoulsLike
 
         [SerializeField] private int _worldSceneIndex = 1;
 
-        private void Awake()
-        {
-            if (Instance == null)
-            {
+        private void Awake() {
+            if (Instance == null) {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
             }
-            else
-            {
+            else {
                 Destroy(gameObject);
             }
         }
 
-        public IEnumerator LoadNewGame()
-        {
+        private void Start() {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        public IEnumerator LoadNewGame() {
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(_worldSceneIndex);
             yield return null;
         }
+
+        public int GetWorldSceneIndex() => _worldSceneIndex;
     }
 }
