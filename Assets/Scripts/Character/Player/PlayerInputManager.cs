@@ -7,6 +7,8 @@ namespace SoulsLike
     {
         public static PlayerInputManager Instance;
 
+        public PlayerManager playerManager;
+
         [Header("PLAYER MOVEMENT INPUT")] [SerializeField]
         private Vector2 _movementInput;
 
@@ -105,6 +107,19 @@ namespace SoulsLike
             else if (moveAmount > 0 && _leftShiftPressed <= 0f) {
                 moveAmount = 1f;
             }
+
+            // WHY DO WE PASS 0 ON THE HORIZONTAL? BECAUSE WE ONLY WANT NON-STRAFING MOVEMENT
+            // WE USE THE HORIZONTAL WHEN WE ARE STRAFING OR LOCKED ON
+
+            if (playerManager == null) {
+                return;
+            }
+
+            // IF WE ARE NOT LOCKED ON, ONLY USE THE MOVE AMOUNT
+            playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0f, moveAmount);
+
+            // IF WE ARE LOCKED ON PASS THE HORIZONTAL MOVEMENT AS WELL
+
 
             // if (_moveAmount <= 0.5f && _moveAmount > 0) {
             //     _moveAmount = 0.5f;

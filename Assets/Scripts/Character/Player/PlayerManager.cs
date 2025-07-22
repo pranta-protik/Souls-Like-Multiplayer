@@ -1,13 +1,17 @@
+using UnityEngine;
+
 namespace SoulsLike
 {
     public class PlayerManager : CharacterManager
     {
-        private PlayerLocomotionManager _playerLocomotionManager;
+        [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
+        [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
 
         protected override void Awake() {
             base.Awake();
 
-            _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         }
 
         protected override void Update() {
@@ -19,7 +23,7 @@ namespace SoulsLike
             }
 
             // HANDLE MOVEMENT
-            _playerLocomotionManager.HandleAllMovement();
+            playerLocomotionManager.HandleAllMovement();
         }
 
         protected override void LateUpdate() {
@@ -38,6 +42,7 @@ namespace SoulsLike
             // IF THIS IS THE PLAYER OBJECT OWNED BY THIS CLIENT
             if (IsOwner) {
                 PlayerCamera.Instance.playerManager = this;
+                PlayerInputManager.Instance.playerManager = this;
             }
         }
     }

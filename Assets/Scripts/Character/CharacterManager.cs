@@ -5,36 +5,38 @@ namespace SoulsLike
 {
     public class CharacterManager : NetworkBehaviour
     {
-        public CharacterController characterController;
-        private CharacterNetworkManager _characterNetworkManager;
+        [HideInInspector] public CharacterController characterController;
+        [HideInInspector] public Animator animator;
+        [HideInInspector] public CharacterNetworkManager characterNetworkManager;
 
         protected virtual void Awake() {
             DontDestroyOnLoad(this);
 
             characterController = GetComponent<CharacterController>();
-            _characterNetworkManager = GetComponent<CharacterNetworkManager>();
+            animator = GetComponent<Animator>();
+            characterNetworkManager = GetComponent<CharacterNetworkManager>();
         }
 
         protected virtual void Update() {
             // IF THIS CHARACTER IS BEING CONTROLLED FROM OUR SIDE, THEN ASSIGN ITS NETWORK POSITION TO THE POSITION OF OUR TRANSFORM
             if (IsOwner) {
-                _characterNetworkManager.networkPosition.Value = transform.position;
-                _characterNetworkManager.networkRotation.Value = transform.rotation;
+                characterNetworkManager.networkPosition.Value = transform.position;
+                characterNetworkManager.networkRotation.Value = transform.rotation;
             }
             // IF THIS CHARACTER IS BEING CONTROLLED FROM ELSE WHERE, THEN ASSIGN ITS POSITION HERE LOCALLY BY THE POSITION OF ITS NETWORK TRANSFORM
             else {
                 // Position
                 transform.position = Vector3.SmoothDamp(
                     transform.position,
-                    _characterNetworkManager.networkPosition.Value,
-                    ref _characterNetworkManager.networkPositionVelocity,
-                    _characterNetworkManager.networkPositionSmoothTime);
+                    characterNetworkManager.networkPosition.Value,
+                    ref characterNetworkManager.networkPositionVelocity,
+                    characterNetworkManager.networkPositionSmoothTime);
 
                 // Rotation
                 transform.rotation = Quaternion.Slerp(
                     transform.rotation,
-                    _characterNetworkManager.networkRotation.Value,
-                    _characterNetworkManager.networkRotationSmoothTime);
+                    characterNetworkManager.networkRotation.Value,
+                    characterNetworkManager.networkRotationSmoothTime);
             }
         }
 

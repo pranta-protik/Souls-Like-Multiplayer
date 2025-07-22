@@ -9,6 +9,7 @@ namespace SoulsLike
         public float verticalMovement;
         public float horizontalMovement;
         public float moveAmount;
+
         [SerializeField] private float _walkingSpeed = 2f;
         [SerializeField] private float _runningSpeed = 5f;
         [SerializeField] private float _rotationSpeed = 15f;
@@ -22,18 +23,39 @@ namespace SoulsLike
             _playerManager = GetComponent<PlayerManager>();
         }
 
+        protected override void Update() {
+            base.Update();
+
+            if (_playerManager.IsOwner) {
+                _playerManager.characterNetworkManager.verticalMovement.Value = verticalMovement;
+                _playerManager.characterNetworkManager.horizontalMovement.Value = horizontalMovement;
+                _playerManager.characterNetworkManager.moveAmount.Value = moveAmount;
+            }
+            else {
+                verticalMovement = _playerManager.characterNetworkManager.verticalMovement.Value;
+                horizontalMovement = _playerManager.characterNetworkManager.horizontalMovement.Value;
+                moveAmount = _playerManager.characterNetworkManager.moveAmount.Value;
+
+                // IF NOT LOCKED ON, PASS MOVE AMOUNT
+                _playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0f, moveAmount);
+
+                // IF LOCKED ON, PASS HORIZONTAL AND VERTICAL
+            }
+        }
+
         public void HandleAllMovement() {
             HandleGroundedMovement();
             HandleRotation();
         }
 
-        private void GetVerticalAndHorizontalInputs() {
+        private void GetMovementValues() {
             verticalMovement = PlayerInputManager.Instance.verticalInput;
             horizontalMovement = PlayerInputManager.Instance.horizontalInput;
+            moveAmount = PlayerInputManager.Instance.moveAmount;
         }
 
         private void HandleGroundedMovement() {
-            GetVerticalAndHorizontalInputs();
+            GetMovementValues();
 
             // OUR MOVE DIRECTION IS BASED ON OUR CAMERAS FACING PERSPECTIVE & OUR MOVEMENT INPUTS
             _moveDirection = PlayerCamera.Instance.transform.forward * verticalMovement;
