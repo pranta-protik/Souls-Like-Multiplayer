@@ -94,6 +94,34 @@
             ]
         },
         {
+            "name": "PlayerCamera",
+            "id": "427eaef4-4aa0-418f-826c-6d57bf19fab4",
+            "actions": [
+                {
+                    "name": "Movement",
+                    "type": "PassThrough",
+                    "id": "df52441b-c4fc-4135-b800-c47393d589c1",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ed887e38-3740-4bea-88d4-f290b1c4681f",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "UI",
             "id": "0f31e855-450b-4795-bf10-edd1d4319f8f",
             "actions": [

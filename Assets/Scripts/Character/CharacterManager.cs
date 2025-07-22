@@ -37,5 +37,7 @@ namespace SoulsLike
                     _characterNetworkManager.networkRotationSmoothTime);
             }
         }
+
+        protected virtual void LateUpdate() { }
     }
 }

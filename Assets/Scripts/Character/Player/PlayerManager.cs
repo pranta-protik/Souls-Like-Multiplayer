@@ -21,5 +21,24 @@ namespace SoulsLike
             // HANDLE MOVEMENT
             _playerLocomotionManager.HandleAllMovement();
         }
+
+        protected override void LateUpdate() {
+            if (!IsOwner) {
+                return;
+            }
+
+            base.LateUpdate();
+
+            PlayerCamera.Instance.HandleAllCameraActions();
+        }
+
+        public override void OnNetworkSpawn() {
+            base.OnNetworkSpawn();
+
+            // IF THIS IS THE PLAYER OBJECT OWNED BY THIS CLIENT
+            if (IsOwner) {
+                PlayerCamera.Instance.playerManager = this;
+            }
+        }
     }
 }

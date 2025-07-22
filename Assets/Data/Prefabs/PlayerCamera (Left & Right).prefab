@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6235684423508827240}
   - component: {fileID: 808780987210244897}
   m_Layer: 0
-  m_Name: PlayerCamera
+  m_Name: PlayerCamera (Left & Right)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 782026167063159414}
+  - {fileID: 3095575197265920724}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &808780987210244897
@@ -45,7 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4079b5d70657c7c4cb63c199980cd68b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
   cameraObject: {fileID: 5304658415712396990}
+  _cameraPivotTransform: {fileID: 3095575197265920724}
+  _cameraSmoothSpeed: 1
+  _leftAndRightRotationSpeed: 25
+  _upAndDownRotationSpeed: 25
+  _minimumPivot: -30
+  _maximumPivot: 60
+  _cameraCollisionRadius: 0.2
+  _collideWithLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  _leftAndRightLookAngle: 0
+  _upAndDownLookAngle: 0
 --- !u!1 &5304658415712396990
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,11 +87,11 @@ Transform:
   m_GameObject: {fileID: 5304658415712396990}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6235684423508827240}
+  m_Father: {fileID: 3095575197265920724}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &8219903240174147992
 Camera:
@@ -183,3 +196,35 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &7393165441442000356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3095575197265920724}
+  m_Layer: 0
+  m_Name: CameraPivot (Up & Down)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3095575197265920724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7393165441442000356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 782026167063159414}
+  m_Father: {fileID: 6235684423508827240}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

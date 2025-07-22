@@ -7,12 +7,19 @@ namespace SoulsLike
     {
         public static PlayerInputManager Instance;
 
-        [SerializeField] private Vector2 _movementInput;
-        [SerializeField] private float _leftShiftPressed;
+        [Header("PLAYER MOVEMENT INPUT")] [SerializeField]
+        private Vector2 _movementInput;
 
+        [SerializeField] private float _leftShiftPressed;
         public float verticalInput;
         public float horizontalInput;
         public float moveAmount;
+
+        [Header("CAMERA MOVEMENT INPUT")] [SerializeField]
+        private Vector2 _cameraInput;
+
+        public float cameraVerticalInput;
+        public float cameraHorizontalInput;
 
         private PlayerControls _playerControls;
 
@@ -38,6 +45,8 @@ namespace SoulsLike
             // IF WE ARE LOADING INTO OUR WORLD SCENE, ENABLE OUR PLAYERS CONTROLS
             if (newScene.buildIndex == WorldSaveGameManager.Instance.GetWorldSceneIndex()) {
                 Instance.enabled = true;
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = false;
             }
             // OTHERWISE WE MUST BE AT THE MAIN MENU, DISABLE OUR PLAYERS CONTROLS
             // THIS IS SO OUR PLAYER CANT MOVE AROUND IF WE ENTER THINGS LIKE A CHARACTER CREATION MENU ETC. 
@@ -49,8 +58,11 @@ namespace SoulsLike
         private void OnEnable() {
             if (_playerControls == null) {
                 _playerControls = new PlayerControls();
+
                 _playerControls.PlayerMovement.Movement.performed += i => _movementInput = i.ReadValue<Vector2>();
                 _playerControls.PlayerMovement.Walk.performed += i => _leftShiftPressed = i.ReadValue<float>();
+
+                _playerControls.PlayerCamera.Movement.performed += i => _cameraInput = i.ReadValue<Vector2>();
             }
 
             _playerControls.Enable();
@@ -74,10 +86,11 @@ namespace SoulsLike
         }
 
         private void Update() {
-            HandleMovementInput();
+            HandlePlayerMovementInput();
+            HandleCameraMovementInput();
         }
 
-        private void HandleMovementInput() {
+        private void HandlePlayerMovementInput() {
             verticalInput = _movementInput.y;
             horizontalInput = _movementInput.x;
 
@@ -99,6 +112,11 @@ namespace SoulsLike
             // else if (_moveAmount > 0.5f && _moveAmount <= 1f) {
             //     _moveAmount = 1f;
             // }
+        }
+
+        private void HandleCameraMovementInput() {
+            cameraVerticalInput = _cameraInput.y;
+            cameraHorizontalInput = _cameraInput.x;
         }
     }
 }
