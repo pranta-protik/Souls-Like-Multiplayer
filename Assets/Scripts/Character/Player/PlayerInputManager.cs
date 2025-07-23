@@ -8,6 +8,13 @@ namespace SoulsLike
         public static PlayerInputManager Instance;
 
         public PlayerManager playerManager;
+        private PlayerControls _playerControls;
+
+        [Header("CAMERA MOVEMENT INPUT")] [SerializeField]
+        private Vector2 _cameraInput;
+
+        public float cameraVerticalInput;
+        public float cameraHorizontalInput;
 
         [Header("PLAYER MOVEMENT INPUT")] [SerializeField]
         private Vector2 _movementInput;
@@ -17,13 +24,8 @@ namespace SoulsLike
         public float horizontalInput;
         public float moveAmount;
 
-        [Header("CAMERA MOVEMENT INPUT")] [SerializeField]
-        private Vector2 _cameraInput;
-
-        public float cameraVerticalInput;
-        public float cameraHorizontalInput;
-
-        private PlayerControls _playerControls;
+        [Header("PLAYER ACTION INPUT")] [SerializeField]
+        private bool _dodgeInput = false;
 
         private void Awake() {
             if (Instance == null) {
@@ -63,8 +65,8 @@ namespace SoulsLike
 
                 _playerControls.PlayerMovement.Movement.performed += i => _movementInput = i.ReadValue<Vector2>();
                 _playerControls.PlayerMovement.Walk.performed += i => _leftShiftPressed = i.ReadValue<float>();
-
                 _playerControls.PlayerCamera.Movement.performed += i => _cameraInput = i.ReadValue<Vector2>();
+                _playerControls.PlayerActions.Dodge.performed += i => _dodgeInput = true;
             }
 
             _playerControls.Enable();
@@ -88,10 +90,16 @@ namespace SoulsLike
         }
 
         private void Update() {
-            HandlePlayerMovementInput();
-            HandleCameraMovementInput();
+            HandleAllInputs();
         }
 
+        private void HandleAllInputs() {
+            HandlePlayerMovementInput();
+            HandleCameraMovementInput();
+            HandleDodgeInput();
+        }
+
+        // MOVEMENT
         private void HandlePlayerMovementInput() {
             verticalInput = _movementInput.y;
             horizontalInput = _movementInput.x;
@@ -132,6 +140,15 @@ namespace SoulsLike
         private void HandleCameraMovementInput() {
             cameraVerticalInput = _cameraInput.y;
             cameraHorizontalInput = _cameraInput.x;
+        }
+
+        // ACTION
+        private void HandleDodgeInput() {
+            if (_dodgeInput) {
+                _dodgeInput = false;
+
+                playerManager.playerLocomotionManager.AttemptToPerformDodge();
+            }
         }
     }
 }

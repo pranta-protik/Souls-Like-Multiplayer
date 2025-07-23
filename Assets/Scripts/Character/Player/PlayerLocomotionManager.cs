@@ -6,16 +6,19 @@ namespace SoulsLike
     {
         private PlayerManager _playerManager;
 
-        public float verticalMovement;
-        public float horizontalMovement;
-        public float moveAmount;
+        [HideInInspector] public float verticalMovement;
+        [HideInInspector] public float horizontalMovement;
+        [HideInInspector] public float moveAmount;
 
-        [SerializeField] private float _walkingSpeed = 2f;
+        [Header("MOVEMENT SETTINGS")] [SerializeField]
+        private float _walkingSpeed = 2f;
+
         [SerializeField] private float _runningSpeed = 5f;
         [SerializeField] private float _rotationSpeed = 15f;
-
         private Vector3 _moveDirection;
         private Vector3 _targetRotationDirection;
+
+        [Header("DODGE")] private Vector3 _rollDirection;
 
         protected override void Awake() {
             base.Awake();
@@ -55,6 +58,10 @@ namespace SoulsLike
         }
 
         private void HandleGroundedMovement() {
+            if (!_playerManager.canMove) {
+                return;
+            }
+
             GetMovementValues();
 
             // OUR MOVE DIRECTION IS BASED ON OUR CAMERAS FACING PERSPECTIVE & OUR MOVEMENT INPUTS
@@ -72,6 +79,10 @@ namespace SoulsLike
         }
 
         private void HandleRotation() {
+            if (!_playerManager.canRotate) {
+                return;
+            }
+
             _targetRotationDirection = Vector3.zero;
             _targetRotationDirection = PlayerCamera.Instance.cameraObject.transform.forward * verticalMovement;
             _targetRotationDirection = _targetRotationDirection + PlayerCamera.Instance.transform.right * horizontalMovement;
@@ -85,6 +96,29 @@ namespace SoulsLike
             var newRotation = Quaternion.LookRotation(_targetRotationDirection);
             var targetRotation = Quaternion.Slerp(transform.rotation, newRotation, _rotationSpeed * Time.deltaTime);
             transform.rotation = targetRotation;
+        }
+
+        public void AttemptToPerformDodge() {
+            if (_playerManager.isPerformingAction) {
+                return;
+            }
+
+            // IF WE ARE MOVING WHEN WE ATTEMPT TO DODGE, WE PERFORM A ROLL
+            if (moveAmount > 0) {
+                _rollDirection = PlayerCamera.Instance.cameraObject.transform.forward * verticalMovement;
+                _rollDirection += PlayerCamera.Instance.cameraObject.transform.right * horizontalMovement;
+                _rollDirection.Normalize();
+                _rollDirection.y = 0f;
+
+                var playerRotation = Quaternion.LookRotation(_rollDirection);
+                _playerManager.transform.rotation = playerRotation;
+
+                _playerManager.playerAnimatorManager.PlayTargetActionAnimation("Roll_Forward_01", true, true, false, false);
+            }
+            // IF WE ARE STATIONARY, WE PERFORM A BACKSTEP
+            else {
+                _playerManager.playerAnimatorManager.PlayTargetActionAnimation("Back_Step_01", true, true, false, false);
+            }
         }
     }
 }
