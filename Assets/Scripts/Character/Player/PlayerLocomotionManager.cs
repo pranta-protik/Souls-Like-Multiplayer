@@ -11,9 +11,10 @@ namespace SoulsLike
         [HideInInspector] public float moveAmount;
 
         [Header("MOVEMENT SETTINGS")] [SerializeField]
-        private float _walkingSpeed = 2f;
+        private float _walkingSpeed = 1.5f;
 
-        [SerializeField] private float _runningSpeed = 5f;
+        [SerializeField] private float _runningSpeed = 4.5f;
+        [SerializeField] private float _sprintingSpeed = 7f;
         [SerializeField] private float _rotationSpeed = 15f;
         private Vector3 _moveDirection;
         private Vector3 _targetRotationDirection;
@@ -40,7 +41,7 @@ namespace SoulsLike
                 moveAmount = _playerManager.characterNetworkManager.moveAmount.Value;
 
                 // IF NOT LOCKED ON, PASS MOVE AMOUNT
-                _playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0f, moveAmount);
+                _playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0f, moveAmount, _playerManager.playerNetworkManager.isSprinting.Value);
 
                 // IF LOCKED ON, PASS HORIZONTAL AND VERTICAL
             }
@@ -70,11 +71,16 @@ namespace SoulsLike
             _moveDirection.Normalize();
             _moveDirection.y = 0f;
 
-            if (PlayerInputManager.Instance.moveAmount > 0.5f) {
-                _playerManager.characterController.Move(_moveDirection * (_runningSpeed * Time.deltaTime));
+            if (_playerManager.playerNetworkManager.isSprinting.Value) {
+                _playerManager.characterController.Move(_moveDirection * (_sprintingSpeed * Time.deltaTime));
             }
-            else if (PlayerInputManager.Instance.moveAmount <= 0.5f) {
-                _playerManager.characterController.Move(_moveDirection * (_walkingSpeed * Time.deltaTime));
+            else {
+                if (PlayerInputManager.Instance.moveAmount > 0.5f) {
+                    _playerManager.characterController.Move(_moveDirection * (_runningSpeed * Time.deltaTime));
+                }
+                else if (PlayerInputManager.Instance.moveAmount <= 0.5f) {
+                    _playerManager.characterController.Move(_moveDirection * (_walkingSpeed * Time.deltaTime));
+                }
             }
         }
 
@@ -96,6 +102,21 @@ namespace SoulsLike
             var newRotation = Quaternion.LookRotation(_targetRotationDirection);
             var targetRotation = Quaternion.Slerp(transform.rotation, newRotation, _rotationSpeed * Time.deltaTime);
             transform.rotation = targetRotation;
+        }
+
+        public void HandleSprinting() {
+            if (_playerManager.isPerformingAction) {
+                _playerManager.playerNetworkManager.isSprinting.Value = false;
+            }
+
+            // IF WE ARE MOVING, SPRINTING IS TRUE
+            if (moveAmount >= 0.5f) {
+                _playerManager.playerNetworkManager.isSprinting.Value = true;
+            }
+            // IF WE ARE STATIONARY/MOVING SLOWLY SPRINTING IS FALSE
+            else {
+                _playerManager.playerNetworkManager.isSprinting.Value = false;
+            }
         }
 
         public void AttemptToPerformDodge() {

@@ -19,13 +19,15 @@ namespace SoulsLike
         [Header("PLAYER MOVEMENT INPUT")] [SerializeField]
         private Vector2 _movementInput;
 
-        [SerializeField] private float _leftShiftPressed;
         public float verticalInput;
         public float horizontalInput;
         public float moveAmount;
 
         [Header("PLAYER ACTION INPUT")] [SerializeField]
-        private bool _dodgeInput = false;
+        private bool _walkInput = false;
+
+        [SerializeField] private bool _dodgeInput = false;
+        [SerializeField] private bool _sprintInput = false;
 
         private void Awake() {
             if (Instance == null) {
@@ -64,9 +66,16 @@ namespace SoulsLike
                 _playerControls = new PlayerControls();
 
                 _playerControls.PlayerMovement.Movement.performed += i => _movementInput = i.ReadValue<Vector2>();
-                _playerControls.PlayerMovement.Walk.performed += i => _leftShiftPressed = i.ReadValue<float>();
                 _playerControls.PlayerCamera.Movement.performed += i => _cameraInput = i.ReadValue<Vector2>();
+
+                _playerControls.PlayerActions.Walk.performed += i => _walkInput = true;
+                _playerControls.PlayerActions.Walk.canceled += i => _walkInput = false;
                 _playerControls.PlayerActions.Dodge.performed += i => _dodgeInput = true;
+
+                // HOLDING THE INPUT, SETS THE BOOL TO TRUE
+                _playerControls.PlayerActions.Sprint.performed += i => _sprintInput = true;
+                // RELEASING THE INPUT, SETS THE BOOL TO FALSE
+                _playerControls.PlayerActions.Sprint.canceled += i => _sprintInput = false;
             }
 
             _playerControls.Enable();
@@ -97,6 +106,7 @@ namespace SoulsLike
             HandlePlayerMovementInput();
             HandleCameraMovementInput();
             HandleDodgeInput();
+            HandleSpringing();
         }
 
         // MOVEMENT
@@ -109,10 +119,10 @@ namespace SoulsLike
 
             // WE CLAMP THE VALUES, SO THEY ARE 0, 0.5 OR 1 (OPTIONAL)
 
-            if (moveAmount > 0 && _leftShiftPressed > 0f) {
+            if (moveAmount > 0 && _walkInput) {
                 moveAmount = 0.5f;
             }
-            else if (moveAmount > 0 && _leftShiftPressed <= 0f) {
+            else if (moveAmount > 0 && !_walkInput) {
                 moveAmount = 1f;
             }
 
@@ -124,7 +134,7 @@ namespace SoulsLike
             }
 
             // IF WE ARE NOT LOCKED ON, ONLY USE THE MOVE AMOUNT
-            playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0f, moveAmount);
+            playerManager.playerAnimatorManager.UpdateAnimatorMovementParameters(0f, moveAmount, playerManager.playerNetworkManager.isSprinting.Value);
 
             // IF WE ARE LOCKED ON PASS THE HORIZONTAL MOVEMENT AS WELL
 
@@ -148,6 +158,15 @@ namespace SoulsLike
                 _dodgeInput = false;
 
                 playerManager.playerLocomotionManager.AttemptToPerformDodge();
+            }
+        }
+
+        private void HandleSpringing() {
+            if (_sprintInput) {
+                playerManager.playerLocomotionManager.HandleSprinting();
+            }
+            else {
+                playerManager.playerNetworkManager.isSprinting.Value = false;
             }
         }
     }

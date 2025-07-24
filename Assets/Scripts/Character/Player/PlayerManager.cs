@@ -6,12 +6,14 @@ namespace SoulsLike
     {
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
+        [HideInInspector] public PlayerNetworkManager playerNetworkManager;
 
         protected override void Awake() {
             base.Awake();
 
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+            playerNetworkManager = GetComponent<PlayerNetworkManager>();
         }
 
         protected override void Update() {

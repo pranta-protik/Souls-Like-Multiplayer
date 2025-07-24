@@ -17,10 +17,6 @@ namespace SoulsLike
         public float networkPositionSmoothTime = 0.1f;
         public float networkRotationSmoothTime = 0.1f;
 
-        protected virtual void Awake() {
-            _characterManager = GetComponent<CharacterManager>();
-        }
-
         [Header("Animator")] public NetworkVariable<float> horizontalMovement =
             new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -28,6 +24,13 @@ namespace SoulsLike
             new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         public NetworkVariable<float> moveAmount = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+        [Header("Flags")] public NetworkVariable<bool> isSprinting =
+            new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+        protected virtual void Awake() {
+            _characterManager = GetComponent<CharacterManager>();
+        }
 
         // A SERVER RPC IS A FUNCTION CALLED FROM A CLIENT, TO THE SERVER (IN OUR CASE THE HOST)
         [ServerRpc]

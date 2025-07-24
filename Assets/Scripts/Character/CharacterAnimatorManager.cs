@@ -6,16 +6,24 @@ namespace SoulsLike
     public class CharacterAnimatorManager : MonoBehaviour
     {
         private CharacterManager _characterManager;
-        private float _vertical;
-        private float _horizontal;
+
+        private static readonly int Vertical = Animator.StringToHash("Vertical");
+        private static readonly int Horizontal = Animator.StringToHash("Horizontal");
 
         protected virtual void Awake() {
             _characterManager = GetComponent<CharacterManager>();
         }
 
-        public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement) {
-            _characterManager.animator.SetFloat("Horizontal", horizontalMovement, 0.1f, Time.deltaTime);
-            _characterManager.animator.SetFloat("Vertical", verticalMovement, 0.1f, Time.deltaTime);
+        public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting) {
+            var horizontalAmount = horizontalMovement;
+            var verticalAmount = verticalMovement;
+
+            if (isSprinting) {
+                verticalAmount = 2f;
+            }
+
+            _characterManager.animator.SetFloat(Horizontal, horizontalAmount, 0.1f, Time.deltaTime);
+            _characterManager.animator.SetFloat(Vertical, verticalAmount, 0.1f, Time.deltaTime);
         }
 
         public virtual void PlayTargetActionAnimation(

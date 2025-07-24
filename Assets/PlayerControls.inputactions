@@ -13,15 +13,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Walk",
-                    "type": "PassThrough",
-                    "id": "c9aabf71-615a-4261-93b9-8e5d452a036b",
-                    "expectedControlType": "Key",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -79,17 +70,6 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "244cde71-3f10-4a03-a45a-811ad297d402",
-                    "path": "<Keyboard>/leftAlt",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Walk",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -126,12 +106,30 @@
             "id": "2fab5ee7-721d-467c-b818-335dfe58fb16",
             "actions": [
                 {
+                    "name": "Walk",
+                    "type": "Button",
+                    "id": "b5dd7d0c-fa98-44f5-a6b6-911cc60d6069",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Dodge",
                     "type": "Button",
                     "id": "da289ccf-b47a-4ed0-9a05-b14a14f6e380",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sprint",
+                    "type": "PassThrough",
+                    "id": "a771c57e-ecf9-4883-8a84-8a700b8857d8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 }
             ],
@@ -144,6 +142,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4f82e715-1108-4dac-98ba-3d2dc6d972d1",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da34dc77-f898-486c-b043-9c1e69f58f02",
+                    "path": "<Keyboard>/leftAlt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
