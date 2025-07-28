@@ -6,7 +6,7 @@ namespace SoulsLike
     {
         [SerializeField] private UIStatBar _staminaBar;
 
-        public void SetNewStaminaValue(float newValue, float oldValue) {
+        public void SetNewStaminaValue(float oldValue, float newValue) {
             _staminaBar.SetStat(Mathf.RoundToInt(newValue));
         }
 
