@@ -10,6 +10,8 @@ namespace SoulsLike
         [Header("NETWORK JOIN")] [SerializeField]
         private bool _startGameAsClient;
 
+        [HideInInspector] public PlayerUIHUDManager playerUIHUDManager;
+
         private void Awake() {
             if (Instance == null) {
                 Instance = this;
@@ -17,6 +19,8 @@ namespace SoulsLike
             else {
                 Destroy(gameObject);
             }
+
+            playerUIHUDManager = GetComponentInChildren<PlayerUIHUDManager>();
         }
 
         private void Start() {

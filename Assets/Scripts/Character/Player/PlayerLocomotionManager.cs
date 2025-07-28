@@ -16,10 +16,12 @@ namespace SoulsLike
         [SerializeField] private float _runningSpeed = 4.5f;
         [SerializeField] private float _sprintingSpeed = 7f;
         [SerializeField] private float _rotationSpeed = 15f;
+        [SerializeField] private int _sprintingStaminaCost = 2;
         private Vector3 _moveDirection;
         private Vector3 _targetRotationDirection;
 
         [Header("DODGE")] private Vector3 _rollDirection;
+        [SerializeField] private float _dodgeStaminaCost = 25f;
 
         protected override void Awake() {
             base.Awake();
@@ -109,6 +111,11 @@ namespace SoulsLike
                 _playerManager.playerNetworkManager.isSprinting.Value = false;
             }
 
+            if (_playerManager.playerNetworkManager.currentStamina.Value <= 0) {
+                _playerManager.playerNetworkManager.isSprinting.Value = false;
+                return;
+            }
+
             // IF WE ARE MOVING, SPRINTING IS TRUE
             if (moveAmount >= 0.5f) {
                 _playerManager.playerNetworkManager.isSprinting.Value = true;
@@ -117,10 +124,16 @@ namespace SoulsLike
             else {
                 _playerManager.playerNetworkManager.isSprinting.Value = false;
             }
+
+            _playerManager.playerNetworkManager.currentStamina.Value -= _sprintingStaminaCost * Time.deltaTime;
         }
 
         public void AttemptToPerformDodge() {
             if (_playerManager.isPerformingAction) {
+                return;
+            }
+
+            if (_playerManager.playerNetworkManager.currentStamina.Value <= 0) {
                 return;
             }
 
@@ -140,6 +153,8 @@ namespace SoulsLike
             else {
                 _playerManager.playerAnimatorManager.PlayTargetActionAnimation("Back_Step_01", true, true, false, false);
             }
+
+            _playerManager.playerNetworkManager.currentStamina.Value -= _dodgeStaminaCost;
         }
     }
 }
