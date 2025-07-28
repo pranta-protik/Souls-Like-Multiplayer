@@ -54,10 +54,24 @@ namespace SoulsLike
                 playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
 
                 // THIS WILL BE MOVED WHEN SAVING AND LOADING IS ADDED
+                playerNetworkManager.characterName.Value = "Character";
                 playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
                 playerNetworkManager.currentStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
                 PlayerUIManager.Instance.playerUIHUDManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
             }
+        }
+
+        public void SaveGameDataToCurrentCharacterData(ref CharacterSaveData currentCharacterData) {
+            currentCharacterData.characterName = playerNetworkManager.characterName.Value.ToString();
+            currentCharacterData.xPosition = transform.position.x;
+            currentCharacterData.yPosition = transform.position.y;
+            currentCharacterData.zPosition = transform.position.z;
+        }
+
+        public void LoadGameDataFromCurrentCharacterData(ref CharacterSaveData currentCharacterData) {
+            playerNetworkManager.characterName.Value = currentCharacterData.characterName;
+            var myPosition = new Vector3(currentCharacterData.xPosition, currentCharacterData.yPosition, currentCharacterData.zPosition);
+            transform.position = myPosition;
         }
     }
 }

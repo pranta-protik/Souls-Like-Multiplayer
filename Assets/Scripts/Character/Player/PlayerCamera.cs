@@ -5,6 +5,7 @@ namespace SoulsLike
     public class PlayerCamera : MonoBehaviour
     {
         public static PlayerCamera Instance;
+        
         public PlayerManager playerManager;
         public GameObject cameraObject;
         [SerializeField] private Transform _cameraPivotTransform;
