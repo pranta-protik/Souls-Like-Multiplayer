@@ -152,5 +152,14 @@ namespace SoulsLike
                 }
             }
         }
+
+        public void LoadGameFromCharacterSlot() {
+            WorldSaveGameManager.Instance.currentCharacterSlotBeingUsed = characterSlot;
+            WorldSaveGameManager.Instance.LoadGame();
+        }
+
+        public void SelectCurrentSlot() {
+            TitleScreenManager.Instance.SelectCharacterSlot(characterSlot);
+        }
     }
 }

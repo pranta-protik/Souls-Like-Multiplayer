@@ -9,7 +9,7 @@ namespace SoulsLike
     {
         public static WorldSaveGameManager Instance { get; private set; }
 
-        [SerializeField] private PlayerManager _playerManager;
+        public PlayerManager playerManager;
 
         [Header("Save/Load")] [SerializeField] private bool _saveGame;
         [SerializeField] private bool _loadGame;
@@ -101,11 +101,123 @@ namespace SoulsLike
             return fileName;
         }
 
-        public void CreateNewGame() {
-            // CREATE A NEW FILE, WITH A FILE NAME DEPENDING ON WHICH SLOT WE ARE USING
-            _saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(currentCharacterSlotBeingUsed);
+        public void AttemptToCreateNewGame() {
+            _saveFileDataWriter = new SaveFileDataWriter();
+            _saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
 
-            currentCharacterData = new CharacterSaveData();
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_01);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_01;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_02);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_02;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_03);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_03;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_04);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_04;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_05);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_05;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_06);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_06;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_07);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_07;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_08);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_08;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_09);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_09;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // CHECK TO SEE IF WE CAN CREATE A NEW SAVE FILE (CHECK FOR OTHER EXISTING FILES FIRST)
+            _saveFileDataWriter.saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(CharacterSlot.CharacterSlot_10);
+
+            if (!_saveFileDataWriter.CheckToSeeIfFileExists()) {
+                // IF THIS PROFILE SLOT IS NOT TAKEN, MAKE A NEW ONE USING THIS SLOT
+                currentCharacterSlotBeingUsed = CharacterSlot.CharacterSlot_10;
+                currentCharacterData = new CharacterSaveData();
+                StartCoroutine(LoadWorldScene());
+                return;
+            }
+
+            // IF THERE ARE NO FREE SLOTS, NOTIFY THE PLAYER
+            TitleScreenManager.Instance.DisplayNoFreeCharacterSlotsPopUp();
         }
 
         public void LoadGame() {
@@ -133,10 +245,20 @@ namespace SoulsLike
             _saveFileDataWriter.saveFileName = _saveFileName;
 
             // PASS THE PLAYERS INFO, FROM GAME, TO THEIR SAVE FILE
-            _playerManager.SaveGameDataToCurrentCharacterData(ref currentCharacterData);
+            playerManager.SaveGameDataToCurrentCharacterData(ref currentCharacterData);
 
             // WHITE THAT INFO ONTO A JSON FILE, SAVED TO THEIS MACHINE
             _saveFileDataWriter.CreateNewCharacterSaveFile(currentCharacterData);
+        }
+
+        public void DeleteGame(CharacterSlot characterSlot) {
+            // CHOOSE FILE BASED ON NAME
+            _saveFileName = DecideCharacterFileNameBasedOnCharacterSlotBeingUsed(characterSlot);
+
+            _saveFileDataWriter = new SaveFileDataWriter();
+            _saveFileDataWriter.saveDataDirectoryPath = Application.persistentDataPath;
+            _saveFileDataWriter.saveFileName = _saveFileName;
+            _saveFileDataWriter.DeleteSaveFile();
         }
 
         // LOAD ALL CHARACTER PROFILES ON DEVICE WHEN STARTING GAME
@@ -177,6 +299,8 @@ namespace SoulsLike
 
         public IEnumerator LoadWorldScene() {
             var loadOperation = SceneManager.LoadSceneAsync(_worldSceneIndex);
+            playerManager.LoadGameDataFromCurrentCharacterData(ref currentCharacterData);
+
             yield return null;
         }
 

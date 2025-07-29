@@ -7,7 +7,7 @@ namespace SoulsLike
     [Serializable]
     public class CharacterSaveData
     {
-        [Header("Character Name")] public string characterName;
+        [Header("Character Name")] public string characterName = "Character";
         [Header("Time Played")] public float secondsPlayed;
 
         // WE CAN ONLY SAVE DATA FROM "BASIC" VARIABLE TYPES (Int, Float, String, Bool, etc.)

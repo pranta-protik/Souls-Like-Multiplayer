@@ -50,11 +50,12 @@ namespace SoulsLike
             if (IsOwner) {
                 PlayerCamera.Instance.playerManager = this;
                 PlayerInputManager.Instance.playerManager = this;
+                WorldSaveGameManager.Instance.playerManager = this;
+
                 playerNetworkManager.currentStamina.OnValueChanged += PlayerUIManager.Instance.playerUIHUDManager.SetNewStaminaValue;
                 playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
 
                 // THIS WILL BE MOVED WHEN SAVING AND LOADING IS ADDED
-                playerNetworkManager.characterName.Value = "Character";
                 playerNetworkManager.maxStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
                 playerNetworkManager.currentStamina.Value = playerStatsManager.CalculateStaminaBasedOnEnduranceLevel(playerNetworkManager.endurance.Value);
                 PlayerUIManager.Instance.playerUIHUDManager.SetMaxStaminaValue(playerNetworkManager.maxStamina.Value);
