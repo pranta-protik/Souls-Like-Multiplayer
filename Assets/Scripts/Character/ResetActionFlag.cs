@@ -7,7 +7,7 @@ namespace SoulsLike
         private CharacterManager _characterManager;
 
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-        override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
             if (_characterManager == null) {
                 _characterManager = animator.GetComponent<CharacterManager>();
             }
@@ -17,6 +17,7 @@ namespace SoulsLike
             _characterManager.applyRootMotion = false;
             _characterManager.canRotate = true;
             _characterManager.canMove = true;
+            _characterManager.isJumping = false;
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

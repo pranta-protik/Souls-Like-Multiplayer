@@ -28,6 +28,7 @@ namespace SoulsLike
 
         [SerializeField] private bool _dodgeInput = false;
         [SerializeField] private bool _sprintInput = false;
+        [SerializeField] private bool _jumpInput = false;
 
         private void Awake() {
             if (Instance == null) {
@@ -71,6 +72,7 @@ namespace SoulsLike
                 _playerControls.PlayerActions.Walk.performed += i => _walkInput = true;
                 _playerControls.PlayerActions.Walk.canceled += i => _walkInput = false;
                 _playerControls.PlayerActions.Dodge.performed += i => _dodgeInput = true;
+                _playerControls.PlayerActions.Jump.performed += i => _jumpInput = true;
 
                 // HOLDING THE INPUT, SETS THE BOOL TO TRUE
                 _playerControls.PlayerActions.Sprint.performed += i => _sprintInput = true;
@@ -106,7 +108,8 @@ namespace SoulsLike
             HandlePlayerMovementInput();
             HandleCameraMovementInput();
             HandleDodgeInput();
-            HandleSpringing();
+            HandleSprintInput();
+            HandleJumpInput();
         }
 
         // MOVEMENT
@@ -156,17 +159,23 @@ namespace SoulsLike
         private void HandleDodgeInput() {
             if (_dodgeInput) {
                 _dodgeInput = false;
-
                 playerManager.playerLocomotionManager.AttemptToPerformDodge();
             }
         }
 
-        private void HandleSpringing() {
+        private void HandleSprintInput() {
             if (_sprintInput) {
                 playerManager.playerLocomotionManager.HandleSprinting();
             }
             else {
                 playerManager.playerNetworkManager.isSprinting.Value = false;
+            }
+        }
+
+        private void HandleJumpInput() {
+            if (_jumpInput) {
+                _jumpInput = false;
+                playerManager.playerLocomotionManager.AttemptToPerformJump();
             }
         }
     }

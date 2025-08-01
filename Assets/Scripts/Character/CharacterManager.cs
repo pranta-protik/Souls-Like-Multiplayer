@@ -10,6 +10,8 @@ namespace SoulsLike
         [HideInInspector] public CharacterNetworkManager characterNetworkManager;
 
         [Header("FLAGS")] public bool isPerformingAction = false;
+        public bool isJumping = false;
+        public bool isGrounded = true;
         public bool applyRootMotion = false;
         public bool canRotate = true;
         public bool canMove = true;
@@ -23,6 +25,8 @@ namespace SoulsLike
         }
 
         protected virtual void Update() {
+            animator.SetBool("IsGrounded", isGrounded);
+
             // IF THIS CHARACTER IS BEING CONTROLLED FROM OUR SIDE, THEN ASSIGN ITS NETWORK POSITION TO THE POSITION OF OUR TRANSFORM
             if (IsOwner) {
                 characterNetworkManager.networkPosition.Value = transform.position;
