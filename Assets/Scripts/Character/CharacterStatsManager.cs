@@ -17,6 +17,17 @@ namespace SoulsLike
             _characterManager = GetComponent<CharacterManager>();
         }
 
+        protected virtual void Start() { }
+
+        public int CalculateHealthBasedOnVitalityLevel(int vitality) {
+            var health = 0f;
+
+            // CREATE AN EQUATION FOR HOW YOU WANT YOUR STAMINA TO BE CALCULATED
+            health = vitality * 15f;
+
+            return Mathf.RoundToInt(health);
+        }
+
         public int CalculateStaminaBasedOnEnduranceLevel(int endurance) {
             var stamina = 0f;
 
