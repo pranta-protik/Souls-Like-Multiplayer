@@ -7,6 +7,8 @@ namespace SoulsLike
     {
         public static WorldCharacterEffectsManager Instance;
 
+        [Header("Damage")] public TakeDamageEffect takeDamageEffect;
+
         [SerializeField] private List<InstantCharacterEffect> _instantEffectsList;
 
         private void Awake() {

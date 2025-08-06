@@ -5,9 +5,13 @@ namespace SoulsLike
 {
     public class CharacterManager : NetworkBehaviour
     {
+        [Header("Status")]
+        public NetworkVariable<bool> isDead = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
         [HideInInspector] public CharacterController characterController;
         [HideInInspector] public Animator animator;
         [HideInInspector] public CharacterNetworkManager characterNetworkManager;
+        [HideInInspector] public CharacterEffectsManager characterEffectsManager;
 
         [Header("FLAGS")] public bool isPerformingAction = false;
         public bool isJumping = false;
@@ -22,6 +26,7 @@ namespace SoulsLike
             characterController = GetComponent<CharacterController>();
             animator = GetComponent<Animator>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
+            characterEffectsManager = GetComponent<CharacterEffectsManager>();
         }
 
         protected virtual void Update() {

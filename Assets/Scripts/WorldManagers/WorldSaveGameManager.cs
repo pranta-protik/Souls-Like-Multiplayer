@@ -221,6 +221,9 @@ namespace SoulsLike
         }
 
         private void NewGame() {
+            playerManager.playerNetworkManager.vitality.Value = 10;
+            playerManager.playerNetworkManager.endurance.Value = 10;
+
             // SAVES THE NEWLY CREATED CHARACTER STATS, AND ITEMS (WHEN CREATION SCREEN IS ADDED)
             SaveGame();
             StartCoroutine(LoadWorldScene());

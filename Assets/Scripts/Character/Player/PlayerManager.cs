@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SoulsLike
 {
@@ -64,6 +65,7 @@ namespace SoulsLike
         }
 
         public void SaveGameDataToCurrentCharacterData(ref CharacterSaveData currentCharacterData) {
+            currentCharacterData.sceneIndex = SceneManager.GetActiveScene().buildIndex;
             currentCharacterData.characterName = playerNetworkManager.characterName.Value.ToString();
             currentCharacterData.xPosition = transform.position.x;
             currentCharacterData.yPosition = transform.position.y;
