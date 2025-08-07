@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace SoulsLike
         [HideInInspector] public Animator animator;
         [HideInInspector] public CharacterNetworkManager characterNetworkManager;
         [HideInInspector] public CharacterEffectsManager characterEffectsManager;
+        [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
 
         [Header("FLAGS")] public bool isPerformingAction = false;
         public bool isJumping = false;
@@ -27,6 +29,7 @@ namespace SoulsLike
             animator = GetComponent<Animator>();
             characterNetworkManager = GetComponent<CharacterNetworkManager>();
             characterEffectsManager = GetComponent<CharacterEffectsManager>();
+            characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
         }
 
         protected virtual void Update() {
@@ -55,5 +58,30 @@ namespace SoulsLike
         }
 
         protected virtual void LateUpdate() { }
+
+        public virtual IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false) {
+            if (IsOwner) {
+                characterNetworkManager.currentHealth.Value = 0;
+                isDead.Value = true;
+
+                // RESET ANY FLAGS HERE THAT NEED TO BE RESET
+
+                // IF WE ARE GROUNDED, PLAY AN AERIAL DEATH ANIMATION
+
+                if (!manuallySelectDeathAnimation) {
+                    characterAnimatorManager.PlayTargetActionAnimation("Dead_01", true);
+                }
+            }
+
+            // PLAY SOME DEATH SFX
+
+            yield return new WaitForSeconds(5f);
+
+            // AWARD PLAYERS WITH RUNES
+
+            // DISABLE CHARACTER
+        }
+
+        public virtual void ReviveCharacter() { }
     }
 }

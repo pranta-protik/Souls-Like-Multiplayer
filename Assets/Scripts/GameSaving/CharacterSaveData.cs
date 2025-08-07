@@ -16,7 +16,7 @@ namespace SoulsLike
         public float yPosition;
         public float zPosition;
 
-        [Header("Resources")] public float currentHealth;
+        [Header("Resources")] public int currentHealth;
         public float currentStamina;
 
         [Header("Stats")] public int vitality;

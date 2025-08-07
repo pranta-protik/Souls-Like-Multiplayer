@@ -11,6 +11,7 @@ namespace SoulsLike
         private bool _startGameAsClient;
 
         [HideInInspector] public PlayerUIHUDManager playerUIHUDManager;
+        [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
 
         private void Awake() {
             if (Instance == null) {
@@ -21,6 +22,7 @@ namespace SoulsLike
             }
 
             playerUIHUDManager = GetComponentInChildren<PlayerUIHUDManager>();
+            playerUIPopUpManager = GetComponentInChildren<PlayerUIPopUpManager>();
         }
 
         private void Start() {

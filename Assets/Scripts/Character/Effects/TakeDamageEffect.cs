@@ -14,7 +14,7 @@ namespace SoulsLike
         public float lightningDamage = 0f;
         public float holyDamage = 0f;
 
-        [Header("Final Damage")] public float finalDamageDealt = 0f; // THE DAMAGE THE CHARACTER TAKES AFTER ALL CALCULATIONS HAVE BEEN MADE
+        [Header("Final Damage")] public int finalDamageDealt = 0; // THE DAMAGE THE CHARACTER TAKES AFTER ALL CALCULATIONS HAVE BEEN MADE
 
         [Header("Poise")] public float poiseDamage = 0f;
         public bool poiseIsBroken = false; // IF A CHARACTER'S POISE IS BROKEN, THEY WILL BE "STUNNED" AND PAY A DAMAGE ANIMATION
@@ -52,8 +52,8 @@ namespace SoulsLike
             // ADD ALL DAMAGE TYPES TOGETHER, AND APPLY FINAL DAMAGE
             finalDamageDealt = Mathf.RoundToInt(physicalDamage + magicDamage + fireDamage + lightningDamage + holyDamage);
 
-            if (finalDamageDealt <= 0f) {
-                finalDamageDealt = 1f;
+            if (finalDamageDealt <= 0) {
+                finalDamageDealt = 1;
             }
 
             Debug.Log("Final Damage Given: " + finalDamageDealt);
